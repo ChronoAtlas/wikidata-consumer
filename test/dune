@@ -1,2 +1,4 @@
 (test
- (name test_wikidata_consumer))
+ (name test_wikidata_consumer)
+ (package wikidata-consumer-lib)
+ (libraries alcotest wikidata-consumer-lib))
