@@ -5,7 +5,7 @@
  (modules main)
  (instrumentation
   (backend bisect_ppx))
- (libraries wikidata-consumer-lib cmdliner unix lwt kafka_lwt))
+ (libraries wikidata-consumer-lib cmdliner unix lwt kafka_lwt yojson))
 
 (install
  (section man)

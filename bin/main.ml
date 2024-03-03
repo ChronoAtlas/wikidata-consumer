@@ -1,28 +1,34 @@
 open Cmdliner
-open Lwt
 open Kafka.Metadata
-
-type config = {
-  kafka_brokers : string;
-  kafka_topic : string;
-  postgres_conn_string : string;
-  sleep_interval_s : int;
-}
+open Lwt
+open Wikidata_consumer_lib.Battle_event
+open Wikidata_consumer_lib.Config
 
 let make_config kafka_brokers kafka_topic postgres_conn_string sleep_interval_s
     =
   { kafka_brokers; kafka_topic; postgres_conn_string; sleep_interval_s }
 
-let print_msg = function
-  | Kafka.Message (topic, partition, offset, msg, None) ->
-      Lwt_io.printf "%s,%d,%Ld::%s\n%!" (Kafka.topic_name topic) partition
-        offset msg
-  | Kafka.Message (topic, partition, offset, msg, Some key) ->
-      Lwt_io.printf "%s,%d,%Ld:%s:%s\n%!" (Kafka.topic_name topic) partition
-        offset key msg
-  | Kafka.PartitionEnd (topic, partition, offset) ->
-      Lwt_io.printf "%s,%d,%Ld (EOP)\n%!" (Kafka.topic_name topic) partition
-        offset
+let persist_msg = function
+  | Kafka.Message (_, _, _, msg, _) ->
+      let message = kafka_message_from_json_string msg in
+      Printf.printf "%s\n" message.name;
+      Printf.printf "%f\n" message.date;
+      Printf.printf "%s\n" message.location;
+      Printf.printf "%s\n" message.wikipedia_url_stub;
+      (match message.coordinates with
+      | Some coord -> Printf.printf "Coordinates: %s\n" coord
+      | None -> Printf.printf "Coordinates: None\n");
+      (match message.outcome with
+      | Some outcome -> Printf.printf "Outcome: %s\n" outcome
+      | None -> Printf.printf "Outcome: None\n");
+      (match message.image_url_stub with
+      | Some url -> Printf.printf "Image URL Stub: %s\n" url
+      | None -> Printf.printf "Image URL Stub: None\n");
+      Printf.printf "%s\n" message.checksum;
+      Lwt.return_unit
+  | Kafka.PartitionEnd (_, _, _) ->
+      Printf.printf "End\n";
+      Lwt.return_unit
 
 let run_with_config config =
   Printf.printf
@@ -48,9 +54,12 @@ let run_with_config config =
   in
   let rec loop () =
     Kafka_lwt.consume_batch_queue ~timeout_ms ~msg_count queue
-    >>= Lwt_list.iter_s print_msg
-    >>= fun () -> Lwt_unix.sleep (float_of_int interval_ms /. 1000.0) >>= loop
+    >>= Lwt_list.iter_s persist_msg
+    >>= fun () ->
+    flush stdout;
+    Lwt_unix.sleep (float_of_int interval_ms /. 1000.0) >>= loop
   in
+
   let term () =
     Kafka.destroy_topic topic;
     Kafka.destroy_queue queue;

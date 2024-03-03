@@ -1,5 +1,5 @@
 (library
  (name wikidata_consumer_lib)
  (public_name wikidata-consumer-lib)
- (libraries cmdliner)
+ (libraries kafka_lwt lwt yojson)
  (instrumentation (backend bisect_ppx)))
