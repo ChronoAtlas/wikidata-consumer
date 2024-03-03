@@ -1,3 +1,6 @@
+# Use this to develop locally without ocaml environment
+# $ docker build . -f Dockerfile.dev -t ocamlbuilder
+# $ docker run -it -v "$(pwd)":/usr/app -w /usr/app ocamlbuilder /bin/bash
 FROM ocaml/opam:latest
 
 WORKDIR /usr/app
@@ -6,6 +9,4 @@ RUN apt update
 RUN apt-get install --no-install-recommends --assume-yes pkg-config zlib1g-dev libpq-dev librdkafka-dev
 USER opam
 RUN opam switch create 4.14.0
-RUN opam install dune kafka postgresql cmdliner alcotest
-
-
+RUN opam install dune kafka postgresql cmdliner alcotest bisect_ppx

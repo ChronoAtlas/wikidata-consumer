@@ -27,6 +27,7 @@
  (depends
   (ocaml (>= 4.08))
   (alcotest (and :with-test (>= 1.3.0)))
+  (bisect_ppx (and :with-test (>= 2.5.0)))
   (base (>= v0.12.0))
   (cmdliner (>= 1.1.0))
   dune
