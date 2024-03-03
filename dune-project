@@ -26,8 +26,13 @@
  (description "A longer description")
  (depends
   (ocaml (>= 4.08))
+  (lwt (>= 5.7.0))
+  (kafka_lwt (>= 0.5))
+  (postgresql (>= 5.0.0))
+  (yojson (>= 2.1.2))
   (alcotest (and :with-test (>= 1.3.0)))
-  (bisect_ppx (and :with-test (>= 2.5.0)))
+  (bisect_ppx (and :with-test (>= 2.3.0)))
+  (ocamlformat (and :with-dev-setup (>= 0.26.1)))
   (base (>= v0.12.0))
   (cmdliner (>= 1.1.0))
   dune
