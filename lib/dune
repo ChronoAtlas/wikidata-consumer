@@ -2,4 +2,5 @@
  (name wikidata_consumer_lib)
  (public_name wikidata-consumer-lib)
  (libraries kafka_lwt lwt yojson)
- (instrumentation (backend bisect_ppx)))
+ (instrumentation
+  (backend bisect_ppx)))
