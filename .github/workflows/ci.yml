@@ -20,6 +20,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y pkg-config zlib1g-dev libpq-dev librdkafka-dev 
         opam install . --deps-only --with-test
+        opam install ocamlformat
 
     - name: Lint
       run: make lint
