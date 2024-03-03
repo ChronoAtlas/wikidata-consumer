@@ -1,4 +1,5 @@
 (library
  (name wikidata_consumer_lib)
  (public_name wikidata-consumer-lib)
+ (libraries cmdliner)
  (instrumentation (backend bisect_ppx)))

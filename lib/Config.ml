@@ -1,17 +1,9 @@
-type t = {
+type config = {
   kafka_brokers : string;
   kafka_topic : string;
   postgres_conn_string : string;
-  sleep_interval : int; (* In seconds *)
+  sleep_interval_s : int;
 }
 
-let parse_args () =
-  (* Use Cmdliner to parse CLI arguments *)
-  (* Example return *)
-  {
-    kafka_brokers = "localhost:9092";
-    kafka_topic = "battle_events";
-    postgres_conn_string =
-      "host=localhost dbname=battle_events user=postgres password=secret";
-    sleep_interval = 5;
-  }
+let config kafka_brokers kafka_topic postgres_conn_string sleep_interval_s =
+  { kafka_brokers; kafka_topic; postgres_conn_string; sleep_interval_s }
