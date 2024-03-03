@@ -10,5 +10,4 @@ type battle_event = {
   checksum : string;
 }
 
-let compute_checksum _event =
-  "checksum" (* Placeholder *)
+let compute_checksum _event = "checksum" (* Placeholder *)
