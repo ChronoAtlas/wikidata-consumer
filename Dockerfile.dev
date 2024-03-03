@@ -1,0 +1,11 @@
+FROM ocaml/opam:latest
+
+WORKDIR /usr/app
+USER root
+RUN apt update
+RUN apt-get install --no-install-recommends --assume-yes pkg-config zlib1g-dev libpq-dev librdkafka-dev
+USER opam
+RUN opam switch create 4.14.0
+RUN opam install dune kafka postgresql cmdliner
+
+

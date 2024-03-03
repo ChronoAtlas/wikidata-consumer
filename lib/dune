@@ -1,0 +1,6 @@
+(library
+ (name wikidata_consumer_lib)
+ (public_name wikidata-consumer-lib)
+ (instrumentation
+  (backend bisect_ppx))
+ )

@@ -1,0 +1,13 @@
+(executable
+ (name main)
+ (public_name wikidata-consumer)
+ (package wikidata-consumer)
+ (modules main)
+ (instrumentation
+  (backend bisect_ppx))
+ (libraries wikidata-consumer-lib))
+
+(install
+ (section man)
+ (files wikidata-consumer.1)
+ (package wikidata-consumer))
