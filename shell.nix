@@ -16,6 +16,7 @@ pkgs.mkShell{
     ocamlPackages.ocaml
     ocamlPackages.ocamlformat
     ocamlPackages.postgresql
+    ocamlPackages.ppxlib
     ocamlPackages.utop
     ocamlPackages.yojson
     opam

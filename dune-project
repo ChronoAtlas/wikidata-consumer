@@ -1,4 +1,4 @@
-(lang dune 3.14)
+(lang dune 3.10)
 (name wikidata-consumer)
 (generate_opam_files true)
 (source
@@ -17,9 +17,7 @@
   (base (>= v0.12.0))
   (cmdliner (>= 1.1.0))
   dune
-  dune-build-info)
- (tags
-  (topics "to describe" your project)))
+  dune-build-info))
 (package
  (name wikidata-consumer)
  (synopsis "A short synopsis")
@@ -36,6 +34,4 @@
   (base (>= v0.12.0))
   (cmdliner (>= 1.1.0))
   dune
-  dune-build-info)
- (tags
-  (topics "to describe" your project)))
+  dune-build-info))
