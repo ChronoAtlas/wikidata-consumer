@@ -28,6 +28,7 @@
   (kafka_lwt (>= 0.5))
   (postgresql (>= 5.0.0))
   (yojson (>= 2.1.2))
+  (lwt_ppx (and :with-test (>= 2.1.0)))
   (alcotest (and :with-test (>= 1.3.0)))
   (bisect_ppx (and :with-test (>= 2.3.0)))
   (ocamlformat (and :with-dev-setup (>= 0.26.1)))

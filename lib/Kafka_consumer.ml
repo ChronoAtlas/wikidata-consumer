@@ -2,6 +2,7 @@ open Config
 open Lwt
 open Kafka.Metadata
 
+(* Start consuming from specified partitions *)
 let start_partitions queue topic partitions offset =
   Lwt_list.iter_s
     (fun partition ->
@@ -9,26 +10,33 @@ let start_partitions queue topic partitions offset =
       Lwt.return_unit )
     partitions
 
-let consume_messages (queue : Kafka.queue) (callback : string -> unit t) =
-  Kafka_lwt.consume_batch_queue ~timeout_ms:1000 ~msg_count:10 queue
-  >>= Lwt_list.iter_s (function
-        | Kafka.Message (_, _, _, msg, _) -> callback msg
-        | Kafka.PartitionEnd (_, _, _) -> Printf.printf "End\n" ; Lwt.return_unit )
-  >>= fun () -> flush stdout ; Lwt.return_unit
+(* Consume messages and push them into a stream *)
+let consume_messages (queue : Kafka.queue) : string Lwt_stream.t =
+  let stream, push = Lwt_stream.create () in
+  let rec loop () =
+    Kafka_lwt.consume_batch_queue ~timeout_ms:1000 ~msg_count:10 queue
+    >>= Lwt_list.iter_s (function
+          | Kafka.Message (_, _, _, msg, _) ->
+              push (Some msg) ; (* Push each message into the stream *)
+                                Lwt.return_unit
+          | Kafka.PartitionEnd (_, _, _) -> Printf.printf "End of partition\n" ; flush stdout ; Lwt.return_unit )
+    >>= fun () -> loop ()
+  in
+  Lwt.async loop ; (* Start the loop in a non-blocking manner *)
+                   stream
 
-let rec consume_loop queue config callback =
-  consume_messages queue callback
-  >>= fun () ->
-  Lwt_unix.sleep (float_of_int config.sleep_interval_s) >>= fun () -> consume_loop queue config callback
-
-let consume_with_config config callback =
+(* Main function to setup consumer and return a stream of messages *)
+let consume_with_config (config : config) : string Lwt_stream.t =
   let consumer = Kafka.new_consumer [("metadata.broker.list", config.kafka_brokers)] in
   let topic = Kafka.new_topic consumer config.kafka_topic [] in
   let queue = Kafka.new_queue consumer in
   let metadata = Kafka.topic_metadata consumer topic in
-  Lwt_main.run
-    ( start_partitions queue topic metadata.topic_partitions 0L
-    >>= fun () ->
-    consume_loop queue config callback
-    >>= fun () ->
-    Kafka.destroy_topic topic ; Kafka.destroy_queue queue ; Kafka.destroy_handler consumer ; Lwt.return_unit )
+  Lwt_main.run (start_partitions queue topic metadata.topic_partitions 0L) ;
+  (* Return the stream for further processing *)
+  consume_messages queue
+
+(* Clean-up resources - can be called after stream consumption is done or on program exit *)
+(* let cleanup (consumer : Kafka.consumer) (topic : Kafka.topic) (queue : Kafka.queue) : unit = *)
+(*   Kafka.destroy_topic topic; *)
+(*   Kafka.destroy_queue queue; *)
+(*   Kafka.destroy_handler consumer; *)

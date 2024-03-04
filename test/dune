@@ -1,4 +1,6 @@
 (test
- (name test_wikidata_consumer)
+ (name test)
  (package wikidata-consumer-lib)
- (libraries alcotest wikidata-consumer-lib))
+ (preprocess
+  (pps lwt_ppx))
+ (libraries alcotest wikidata-consumer-lib lwt_ppx))
