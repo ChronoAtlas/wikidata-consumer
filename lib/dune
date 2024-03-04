@@ -1,6 +1,6 @@
 (library
  (name wikidata_consumer_lib)
  (public_name wikidata-consumer-lib)
- (libraries kafka_lwt lwt yojson cmdliner)
+ (libraries kafka_lwt lwt yojson cmdliner postgresql)
  (instrumentation
   (backend bisect_ppx)))
