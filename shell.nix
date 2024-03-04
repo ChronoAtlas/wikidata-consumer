@@ -24,7 +24,4 @@ pkgs.mkShell{
     rdkafka
     zlib
   ];
-  shellHook = ''
-    exec zsh
-  '';
 }
