@@ -10,4 +10,4 @@ RUN apt update
 RUN apt-get install --no-install-recommends --assume-yes pkg-config zlib1g-dev libpq-dev librdkafka-dev libev-dev
 USER opam
 RUN opam switch create 4.14.0
-RUN opam install dune postgresql cmdliner alcotest bisect_ppx lwt conf-libev odoc yojson kafka_lwt ocamlformat lwt_ppx
+RUN opam install dune postgresql cmdliner alcotest bisect_ppx lwt conf-libev odoc yojson kafka_lwt ocamlformat

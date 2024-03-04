@@ -3,4 +3,4 @@
  (package wikidata-consumer-lib)
  (preprocess
   (pps lwt_ppx))
- (libraries alcotest wikidata-consumer-lib lwt_ppx))
+ (libraries alcotest wikidata-consumer-lib))
