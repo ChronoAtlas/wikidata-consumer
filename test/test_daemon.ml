@@ -27,11 +27,20 @@ let mock_processor event : Battle_event.battle_event =
   processed_messages := event :: !processed_messages ;
   event
 
+let mock_empty_processor event : Battle_event.battle_event = event
+
 let test_run () =
   processed_messages := [] ;
   let () = Lwt_main.run (Daemon.run_daemon mock_consumer [mock_processor]) in
   let processed_ids = List.map (fun (event : Battle_event.battle_event) -> event.id) !processed_messages in
   let expected_ids = ["event1"; "event2"; "event3"] in
+  Alcotest.(check (list string)) "equal" expected_ids (List.rev processed_ids)
+
+let test_run_multiple_processors () =
+  processed_messages := [] ;
+  let () = Lwt_main.run (Daemon.run_daemon mock_consumer [mock_processor; mock_processor; mock_empty_processor]) in
+  let processed_ids = List.map (fun (event : Battle_event.battle_event) -> event.id) !processed_messages in
+  let expected_ids = ["event1"; "event1"; "event2"; "event2"; "event3"; "event3"] in
   Alcotest.(check (list string)) "equal" expected_ids (List.rev processed_ids)
 
 let test_run_empty () =
