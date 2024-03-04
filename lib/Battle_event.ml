@@ -38,4 +38,3 @@ let print_battle_event message =
   | Some url -> Printf.printf "Image URL Stub: %s\n" url
   | None -> Printf.printf "Image URL Stub: None\n" ) ;
   Printf.printf "%s\n" message.checksum
-
