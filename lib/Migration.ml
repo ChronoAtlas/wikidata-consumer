@@ -21,5 +21,4 @@ let upgrade uri =
   | Error err ->
       let msg = Printf.sprintf "Abort! We could not get a connection. (err=%s)\n" (Caqti_error.show err) in
       failwith msg
-  | Ok conn -> ensure_migrations_table conn
-  ()
+  | Ok conn -> ensure_migrations_table conn ()
