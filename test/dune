@@ -1,4 +1,6 @@
 (test
  (name test)
  (package wikidata-consumer-lib)
+ (instrumentation
+  (backend bisect_ppx))
  (libraries alcotest wikidata-consumer-lib))

@@ -1,11 +1,18 @@
 (executable
- (name main)
+ (name wikidata_consumer)
  (public_name wikidata-consumer)
  (package wikidata-consumer)
- (modules main)
- (libraries wikidata-consumer-lib cmdliner unix lwt kafka_lwt yojson))
+ (modules wikidata_consumer)
+ (libraries wikidata-consumer-lib cmdliner))
 
-(install
- (section man)
- (files wikidata-consumer.1)
- (package wikidata-consumer))
+(executable
+ (name wikidata_migrate)
+ (public_name wikidata-migrate)
+ (package wikidata-consumer)
+ (modules wikidata_migrate)
+ (libraries wikidata-consumer-lib caqti-driver-postgresql))
+
+; (install
+;  (section man)
+;  (files wikidata-consumer.1 wikidata-migrate.1)
+;  (package wikidata-consumer))
