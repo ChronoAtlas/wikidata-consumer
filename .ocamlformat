@@ -1,9 +1,2 @@
-profile = ocamlformat
-break-cases = fit
-margin = 117
-wrap-comments = true
-line-endings = lf
-
-# To make ocaml-ci happy
-version = ignore
-version-check = false
+profile = janestreet
+version = 0.26.1

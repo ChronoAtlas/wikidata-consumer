@@ -24,10 +24,10 @@
  (description "A longer description")
  (depends
   (ocaml (>= 4.08))
+  (ctypes (>= 0.22.0))
+  (ctypes-foreign (>= 0.22.0))
   (lwt (>= 5.7.0))
   (kafka_lwt (>= 0.5))
-  (caqti (>= 1.8.0))
-  (caqti-driver-postgresql (>= 1.8.0))
   (yojson (>= 2.1.2))
   (alcotest (and :with-test (>= 1.3.0)))
   (bisect_ppx (and :with-test (>= 2.3.0)))

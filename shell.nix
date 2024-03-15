@@ -7,11 +7,10 @@ in
 pkgs.mkShell{
   packages = with pkgs; [
     libpqxx
+    mongoc
     ocamlPackages.alcotest
     ocamlPackages.base
     ocamlPackages.bisect_ppx
-    ocamlPackages.caqti
-    ocamlPackages.caqti-driver-postgresql
     ocamlPackages.cmdliner
     ocamlPackages.kafka_lwt
     ocamlPackages.lwt
